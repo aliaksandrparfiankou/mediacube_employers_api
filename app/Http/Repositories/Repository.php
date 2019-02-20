@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
-abstract class Repository {
+abstract class Repository
+{
     //
 }

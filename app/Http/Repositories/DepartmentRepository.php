@@ -6,7 +6,8 @@ use App\Exceptions\Http\RejectedHttpException;
 use App\Exceptions\Http\ResourceNotFoundHttpException;
 use App\Http\Models\Department;
 
-class DepartmentRepository extends Repository {
+class DepartmentRepository extends Repository
+{
     public function add(string $name)
     {
         $department = new Department();
