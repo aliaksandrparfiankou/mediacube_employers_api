@@ -55,12 +55,12 @@ class DepartmentRepository extends Repository
         return $department;
     }
 
-    public function paginate(int $count, int $lastId = null)
+    public function paginate(int $count, int $pageNumber = 1)
     {
         $query = Department::query();
 
-        if (!is_null($lastId)) {
-            $query->where('id', '>', $lastId);
+        if ($pageNumber > 1) {
+            $query->skip(($pageNumber - 1) * $count);
         }
 
         return $query->limit($count)->get();

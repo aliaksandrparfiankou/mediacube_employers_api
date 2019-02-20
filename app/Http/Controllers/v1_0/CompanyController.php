@@ -22,7 +22,7 @@ class CompanyController extends Controller
      * @method get
      * @params {
      *     count: uint (optional)
-     *     last_id: uint (optional)
+     *     page_number: uint (optional)
      * }
      * @response {
      *     employees: array of {
@@ -31,6 +31,7 @@ class CompanyController extends Controller
      *         employees_count: uint
      *         max_salary: uint (optional)
      *     },
+     *     employees_count: uint,
      *     departments: array of {
      *         id: uint
      *         name: string
@@ -43,11 +44,12 @@ class CompanyController extends Controller
     public function getEmployees(CompanyGetEmployeesRequest $request)
     {
         $count = $request->input('count', 15);
-        $lastId = $request->input('last_id');
-        $employees = $this->companyRepository->getEmployees($count, $lastId);
+        $pageNumber = $request->input('page_number', 1);
+        $employees = $this->companyRepository->getEmployees($count, $pageNumber);
 
         return response()->json([
             'employees' => Employee::collection($employees),
+            'employees_count' => \App\Http\Models\Employee::count(),
             'departments' => DepartmentSimplified::collection(\App\Http\Models\Department::all())
         ]);
     }
