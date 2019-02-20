@@ -24,7 +24,7 @@ class CompanyGetEmployeesRequest extends FormRequest
     public function rules()
     {
         return [
-            'last_id' => 'integer|min:1',
+            'page_number' => 'integer|min:1',
             'count' => 'integer|min:1'
         ];
     }

@@ -122,7 +122,7 @@ class DepartmentController extends Controller
      * @method get
      * @params {
      *     count: uint (optional)
-     *     last_id: uint (optional)
+     *     page_number: uint (optional)
      * }
      * @response array of {
      *     id: uint
@@ -137,8 +137,8 @@ class DepartmentController extends Controller
     public function paginate(DepartmentsGetRequest $request)
     {
         $count = $request->input('count', 15);
-        $lastId = $request->input('last_id');
-        $departments = $this->departmentRepository->paginate($count, $lastId);
+        $pageNumber = $request->input('page_number', 1);
+        $departments = $this->departmentRepository->paginate($count, $pageNumber);
 
         return Department::collection($departments);
     }

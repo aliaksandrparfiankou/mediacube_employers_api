@@ -169,7 +169,7 @@ class EmployeeController extends Controller
      * @enpoint /employees.get
      * @method get
      * @params {
-     *     last_id: uint (optional)
+     *     page_number: uint (optional)
      *     count: uint (optional)
      * }
      * @response array of {
@@ -195,10 +195,9 @@ class EmployeeController extends Controller
      */
     public function paginate(EmployeesGetRequest $request)
     {
-        $employees = $this->employeeRepository->paginate(
-            $request->input('count', 15),
-            $request->input('last_id')
-        );
+        $count = $request->input('count', 15);
+        $pageNumber = $request->input('page_number', 1);
+        $employees = $this->employeeRepository->paginate($count, $pageNumber);
 
         return Employee::collection($employees);
     }
