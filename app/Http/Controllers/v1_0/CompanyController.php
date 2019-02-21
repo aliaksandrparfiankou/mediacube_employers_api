@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\CompanyRepository;
 use App\Http\Requests\CompanyGetEmployeesRequest;
 use App\Http\Resources\DepartmentSimplified;
-use App\Http\Resources\Employee;
+use App\Http\Resources\EmployeeSimplified;
 
 class CompanyController extends Controller
 {
@@ -48,7 +48,7 @@ class CompanyController extends Controller
         $employees = $this->companyRepository->getEmployees($count, $pageNumber);
 
         return response()->json([
-            'employees' => Employee::collection($employees),
+            'employees' => EmployeeSimplified::collection($employees),
             'employees_count' => \App\Http\Models\Employee::count(),
             'departments' => DepartmentSimplified::collection(\App\Http\Models\Department::all())
         ]);

@@ -10,6 +10,7 @@ use App\Http\Requests\EmployeeGetRequest;
 use App\Http\Requests\EmployeeRemoveRequest;
 use App\Http\Requests\EmployeesGetRequest;
 use App\Http\Resources\Employee;
+use App\Http\Resources\EmployeeSimplified;
 use Illuminate\Http\JsonResponse;
 
 class EmployeeController extends Controller
@@ -104,7 +105,7 @@ class EmployeeController extends Controller
      *     id: uint
      * }
      * @errors {
-     *     406 - Employee id refer to non-existant employee
+     *     406 - EmployeeSimplified id refer to non-existant employee
      *     409 - One or several department ids refer to non-existant department
      * }
      *
@@ -149,7 +150,7 @@ class EmployeeController extends Controller
      *     TRANSGENDER = 3
      * }
      * @errors {
-     *     406 - Employee id refer to non-existant employee
+     *     406 - EmployeeSimplified id refer to non-existant employee
      * }
      *
      * @param EmployeeGetRequest $request
@@ -187,7 +188,7 @@ class EmployeeController extends Controller
      *     TRANSGENDER = 3
      * }
      * @errors {
-     *     406 - Employee id refer to non-existant employee
+     *     406 - EmployeeSimplified id refer to non-existant employee
      * }
      *
      * @param EmployeesGetRequest $request
@@ -199,6 +200,9 @@ class EmployeeController extends Controller
         $pageNumber = $request->input('page_number', 1);
         $employees = $this->employeeRepository->paginate($count, $pageNumber);
 
-        return Employee::collection($employees);
+        return response()->json([
+            'employees' => Employee::collection($employees),
+            'employees_count' => \App\Http\Models\Employee::count(),
+        ]);
     }
 }

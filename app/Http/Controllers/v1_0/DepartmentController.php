@@ -140,6 +140,9 @@ class DepartmentController extends Controller
         $pageNumber = $request->input('page_number', 1);
         $departments = $this->departmentRepository->paginate($count, $pageNumber);
 
-        return Department::collection($departments);
+        return response()->json([
+            'departments' => Department::collection($departments),
+            'departments_count' => \App\Http\Models\Department::count()
+        ]);
     }
 }

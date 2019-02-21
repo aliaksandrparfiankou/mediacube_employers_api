@@ -27,8 +27,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         // Here you may define how you wish users to be authenticated for your Lumen
         // application. The callback which receives the incoming request instance
-        // should return either a Employee instance or null. You're free to obtain
-        // the Employee instance via an API token or any other method necessary.
+        // should return either a EmployeeSimplified instance or null. You're free to obtain
+        // the EmployeeSimplified instance via an API token or any other method necessary.
 
         $this->app['auth']->viaRequest('api', function ($request) {
             if ($request->input('api_token')) {
