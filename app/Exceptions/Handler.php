@@ -65,9 +65,9 @@ class Handler extends ExceptionHandler
         } elseif ($exception instanceof Http\HttpException) {
             return response()->json(new \stdClass(), $exception->getStatus())
                 ->withHeaders([
-                    'Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE',
-                    'Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'),
-                    'Access-Control-Allow-Origin', '*'
+                    'Access-Control-Allow-Methods' => 'HEAD, GET, POST, PUT, PATCH, DELETE',
+                    'Access-Control-Allow-Headers' => $request->header('Access-Control-Request-Headers'),
+                    'Access-Control-Allow-Origin' => '*'
                 ]);
         }
 
