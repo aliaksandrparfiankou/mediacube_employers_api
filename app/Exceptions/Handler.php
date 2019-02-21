@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Exception;
 use FastRoute\RouteParser\Std;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Anik\Form\ValidationException as FormValidationException;
 use Illuminate\Validation\ValidationException;
@@ -53,26 +55,46 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof HttpResponseException) {
-            return $exception->getResponse();
+            return $this->addCors(
+                response()->json($exception->getResponse()),
+                $request
+            );
         } elseif ($exception instanceof ModelNotFoundException) {
             $exception = new NotFoundHttpException($exception->getMessage(), $exception);
         } elseif ($exception instanceof AuthorizationException) {
             $exception = new HttpException(403, $exception->getMessage());
         } elseif ($exception instanceof ValidationException) {
-            return response()->json($exception->errors(), $exception->status);
+            return $this->addCors(
+                response()->json($exception->errors(), $exception->status),
+                $request
+            );
         } elseif ($exception instanceof FormValidationException) {
-            return response()->json($exception->getResponse(), $exception->getStatusCode());
+            return $this->addCors(
+                response()->json($exception->getResponse(), $exception->getStatusCode()),
+                $request
+            );
         } elseif ($exception instanceof Http\HttpException) {
-            return response()->json(new \stdClass(), $exception->getStatus())
-                ->withHeaders([
-                    'Access-Control-Allow-Methods' => 'HEAD, GET, POST, PUT, PATCH, DELETE',
-                    'Access-Control-Allow-Headers' => $request->header('Access-Control-Request-Headers'),
-                    'Access-Control-Allow-Origin' => '*'
-                ]);
+            return $this->addCors(
+                response()->json(new \stdClass(), $exception->getStatus()),
+                $request
+            );
+
         }
 
         $fe = FlattenException::create($exception);
 
-        return response()->json($fe->toArray(), $fe->getStatusCode(), $fe->getHeaders());
+        return $this->addCors(
+            response()->json($fe->toArray(), $fe->getStatusCode(), $fe->getHeaders()),
+            $request
+        );
+    }
+
+    private function addCors(JsonResponse $response, Request $request)
+    {
+        return $response->withHeaders([
+            'Access-Control-Allow-Methods' => 'HEAD, GET, POST, PUT, PATCH, DELETE',
+            'Access-Control-Allow-Headers' => $request->header('Access-Control-Request-Headers'),
+            'Access-Control-Allow-Origin' => '*'
+        ]);
     }
 }
