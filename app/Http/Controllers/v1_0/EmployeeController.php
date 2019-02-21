@@ -173,14 +173,17 @@ class EmployeeController extends Controller
      *     page_number: uint (optional)
      *     count: uint (optional)
      * }
-     * @response array of {
-     *     id: uint
-     *     first_name: string
-     *     last_name: string
-     *     middle_name: string (optional)
-     *     gender: {ENUM} GenderEnum (optional),
-     *     salary: uint (optional),
-     *     department_ids: uint[]
+     * @response {
+     *     employees: array of {
+     *         id: uint
+     *         first_name: string
+     *         last_name: string
+     *         middle_name: string (optional)
+     *         gender: {ENUM} GenderEnum (optional),
+     *         salary: uint (optional),
+     *         department_ids: uint[]
+     *     },
+     *     employees_count: uint
      * }
      * @GenderEnum {
      *     MALE = 1

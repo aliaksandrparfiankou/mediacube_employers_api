@@ -124,11 +124,14 @@ class DepartmentController extends Controller
      *     count: uint (optional)
      *     page_number: uint (optional)
      * }
-     * @response array of {
-     *     id: uint
-     *     name: uint
-     *     employees_count: uint
-     *     max_salary: uint (optional)
+     * @response {
+     *     departments: array of {
+     *         id: uint
+     *         name: uint
+     *         employees_count: uint
+     *         max_salary: uint (optional)
+     *     },
+     *     departments_count: uint
      * }
      *
      * @param DepartmentsGetRequest $request
