@@ -63,7 +63,12 @@ class Handler extends ExceptionHandler
         } elseif ($exception instanceof FormValidationException) {
             return response()->json($exception->getResponse(), $exception->getStatusCode());
         } elseif ($exception instanceof Http\HttpException) {
-            return response()->json(new \stdClass(), $exception->getStatus());
+            return response()->json(new \stdClass(), $exception->getStatus())
+                ->withHeaders([
+                    'Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE',
+                    'Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'),
+                    'Access-Control-Allow-Origin', '*'
+                ]);
         }
 
         $fe = FlattenException::create($exception);
